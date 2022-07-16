@@ -1,0 +1,25 @@
+#!/bin/bash
+trap "echo -ne '\nstopping container...' && docker stop refinery-doc-ock > /dev/null 2>&1 && echo -ne '\t\t [done]\n'" EXIT
+
+source check_config_service
+
+echo -ne 'stopping old container...'
+docker stop refinery-doc-ock > /dev/null 2>&1
+echo -ne '\t [done]\n'
+
+echo -ne 'building container...'
+docker build -t refinery-doc-ock-dev -f dev.Dockerfile . > /dev/null 2>&1
+echo -ne '\t\t [done]\n'
+
+echo -ne 'starting...'
+docker run -d --rm \
+--name refinery-doc-ock \
+-e TELEMETRY_URI=https://telemetry.kern.ai \
+-p 7060:80 \
+--mount type=bind,source="$(pwd)"/,target=/app \
+-v /var/run/docker.sock:/var/run/docker.sock \
+--network dev-setup_default \
+refinery-doc-ock-dev > /dev/null 2>&1
+echo -ne '\t\t\t [done]\n'
+
+docker logs -f refinery-doc-ock
