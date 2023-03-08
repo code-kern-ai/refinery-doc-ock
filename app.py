@@ -48,6 +48,11 @@ def track(user_id: str, event: str, request: dict = Body(...)):
 
 @app.put("/config_changed")
 def config_changed() -> int:
-
     config_handler.refresh_config()
     return responses.PlainTextResponse(status_code=status.HTTP_200_OK)
+
+
+@app.get("/healthcheck")
+def healthcheck() -> responses.PlainTextResponse:
+    headers = {"APP": "OK"}
+    return responses.PlainTextResponse("OK", headers=headers)
