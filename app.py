@@ -7,7 +7,7 @@ import requests
 
 app = FastAPI()
 
-TELEMETRY_URI = os.getenv("TELEMETRY_URI")
+TELEMETRY_URI = "placeholder" # os.getenv("TELEMETRY_URI")
 
 
 class User(BaseModel):
@@ -19,6 +19,7 @@ class User(BaseModel):
 
 @app.post("/register_user/{user_id}")
 def register(user_id: str, user: User):
+    return responses.PlainTextResponse("Tracking is disabled")
     # for more information on the data structures take a look at:
     # https://developer.mixpanel.com/docs/data-structure-deep-dive
     response = requests.post(
@@ -36,6 +37,7 @@ def register(user_id: str, user: User):
 
 @app.post("/track/{user_id}/{event}")
 def track(user_id: str, event: str, request: dict = Body(...)):
+    return responses.PlainTextResponse("Tracking is disabled")
     if config_handler.get_config_value("allow_data_tracking"):
         response = requests.post(
             f"{TELEMETRY_URI}/track/{user_id}/{event}",
