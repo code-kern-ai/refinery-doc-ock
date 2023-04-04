@@ -7,7 +7,7 @@ import requests
 
 app = FastAPI()
 
-TELEMETRY_URI = os.getenv("TELEMETRY_URI")
+TELEMETRY_URI = "placeholder" # os.getenv("TELEMETRY_URI")
 
 
 class User(BaseModel):
