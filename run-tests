@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker exec -it refinery-doc-ock sh -c "cd /app && python3 -m pytest -v"
